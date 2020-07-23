@@ -7,7 +7,6 @@
 <script>
   export default {
     name: "BackTop",
-
   }
 </script>
 
@@ -15,7 +14,8 @@
   .back-top {
     position: fixed;
     right: 8px;
-    bottom: 55px;
+    bottom: 70px;
+    z-index: 9;
   }
 
   .back-top img {
