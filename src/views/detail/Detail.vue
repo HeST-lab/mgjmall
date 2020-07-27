@@ -12,6 +12,7 @@
     </scroll>
     <back-top @click.native="backClick" v-show="isShowBackTop"></back-top>
     <detail-bottom-bar @addToCart="addToCart"></detail-bottom-bar>
+
   </div>
 </template>
 
@@ -27,6 +28,7 @@
 
   import Scroll from "../../components/common/scroll/Scroll";
   import GoodsList from "../../components/content/goods/GoodsList";
+
 
   import {getDetail, getRecomment, Goods, GoodsParam, Shop} from "../../network/detail";
   import {debounce} from "../../common/utils";
@@ -132,7 +134,7 @@
       //滚动到相应位置，nav bar变化
       detailScroll(position) {
         const positionY = -position.y
-        let length = this.themeTopYs.length
+
         for (let i in this.themeTopYs) {
           i = Number(i)
           if (this.currentIndex !== i && (positionY >= this.themeTopYs[i] && positionY < (this.themeTopYs[i + 1] || Number.MAX_VALUE))) {
@@ -155,6 +157,11 @@
         product.iid = this.iid
 
         //将商品信息传给购物车 -- vuex
+        this.$store.dispatch('addCart', product)
+          .then(res => {
+          this.$toast.show(res, 1500)
+        })
+
       }
     }
   }

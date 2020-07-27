@@ -1,6 +1,6 @@
 <template>
   <div class="goods" @click="itemClick">
-    <img :src="showImage" alt="" @load="imgLoad">
+    <img v-lazy="showImage" alt="" @load="imgLoad">
     <div class="goods-info">
       <p>{{goodsItem.title}}</p>
       <span class="price">{{goodsItem.price}}</span>
@@ -22,7 +22,16 @@
     },
     computed: {
       showImage() {
-        return this.goodsItem.image || this.goodsItem.show.img
+        //首页  推荐  分类   不知为何这样会导致分类里的找不到image
+        //return this.goodsItem.show.img || this.goodsItem.image ||return this.goodsItem.img
+
+        if (this.$route.path.indexOf('/home') !== -1) {
+          return this.goodsItem.show.img
+        } else if (this.$route.path.indexOf('/detail') !== -1) {
+          return this.goodsItem.image
+        }else if (this.$route.path.indexOf('/category') !== -1){
+          return this.goodsItem.img
+        }
       }
     },
     methods: {
@@ -31,12 +40,14 @@
           this.$bus.$emit('homeItemImageLoad')
         } else if (this.$route.path.indexOf('/detail') !== -1) {
           this.$bus.$emit('detailItemImageLoad')
+        }else if (this.$route.path.indexOf('/category') !== -1){
+          this.$bus.$emit('categoryItemImageLoad')
         }
       },
       itemClick() {
         this.$router.push('/detail/' + this.goodsItem.iid)
       }
-    }
+    },
   }
 </script>
 
